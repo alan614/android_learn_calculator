@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -80,12 +83,12 @@ fun Calculator(modifier: Modifier) {
         mutableStateOf("")
     }
 
-    var tipInput by remember {
+    /*var tipInput by remember {
         mutableDoubleStateOf(20.0)
-    }
+    }*/
 
     var textTipInput by remember {
-        mutableStateOf("20")
+        mutableStateOf("")
     }
     val doubleTipAmount = textTipInput.toDoubleOrNull() ?: 20.0
 
@@ -118,6 +121,7 @@ fun Calculator(modifier: Modifier) {
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         EditNumberField(
             label = R.string.bill_amount,
+            leadingIcon = R.drawable.money,
             amountInput = amountInput,
             modifier = Modifier
                 .fillMaxWidth()
@@ -126,6 +130,7 @@ fun Calculator(modifier: Modifier) {
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         EditNumberField(
             label = R.string.tip_rate,
+            leadingIcon = R.drawable.percent,
             amountInput = textTipInput,
             modifier = Modifier
                 .fillMaxWidth()
@@ -166,6 +171,7 @@ private fun calculateTip(amount: Double, tipPercent: Double = 10.0, isRoundedUp:
 @Composable
 fun EditNumberField(
     @StringRes label: Int,
+    @DrawableRes leadingIcon: Int,
     amountInput: String,
     modifier: Modifier,
     onValueChange: (String) -> Unit
@@ -173,6 +179,7 @@ fun EditNumberField(
 
     TextField(
         label = { Text(text = stringResource(label)) },
+        leadingIcon = { Image(painter = painterResource(id = leadingIcon), contentDescription = "") },
         singleLine = true,
         value = amountInput,
         onValueChange = onValueChange,
