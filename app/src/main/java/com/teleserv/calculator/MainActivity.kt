@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -234,6 +235,7 @@ fun RoundUpTip(isChecked: Boolean, modifier: Modifier, onSwitchChange: (Boolean)
         Switch(
             checked = isChecked,
             onCheckedChange = onSwitchChange,
+            modifier = Modifier.testTag("round-up-switch")
             //modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.End)
         )
     }

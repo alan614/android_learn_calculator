@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.teleserv.calculator.ui.theme.CalculatorTheme
 import org.junit.Rule
@@ -20,15 +22,35 @@ class TipUITest {
     @Test
     fun calculate_20_percent_tip() {
         composeTestRule.setContent {
-            /*CalculatorTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->*/
-                    CalculatorApp(modifier = Modifier)
-                /*}
-            }*/
+            CalculatorTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    CalculatorApp(modifier = Modifier.padding(innerPadding))
+                }
+            }
         }
 
         composeTestRule.onNodeWithText("Bill Amount").performTextInput("10")
         composeTestRule.onNodeWithText("Tip Rate").performTextInput("20")
+        val expectedTip = NumberFormat.getCurrencyInstance().format(2)
+
+        composeTestRule.onNodeWithText("Tip Amount: $expectedTip").assertExists(
+            "No node with this text was found."
+        )
+    }
+
+    @Test
+    fun calculate_20_percent_tip_with_round_up() {
+        composeTestRule.setContent {
+            CalculatorTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    CalculatorApp(modifier = Modifier.padding(innerPadding))
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Bill Amount").performTextInput("9")
+        composeTestRule.onNodeWithText("Tip Rate").performTextInput("20")
+        composeTestRule.onNodeWithTag("round-up-switch").performClick()
         val expectedTip = NumberFormat.getCurrencyInstance().format(2)
 
         composeTestRule.onNodeWithText("Tip Amount: $expectedTip").assertExists(
